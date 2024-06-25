@@ -74,6 +74,7 @@ module vault::vault {
     }
 
     /// Get the vault's address from the admin's address
+    #[view]
     public fun get_vault_address(admin_address: address): address acquires VaultSignerCapability {
         let vault_signer_cap = &borrow_global<VaultSignerCapability>(admin_address).cap;
         account::get_signer_capability_address(vault_signer_cap)
@@ -187,24 +188,28 @@ module vault::vault {
     }
 
     /// Get the vault's balance
+    #[view]
     public fun get_balance(vault_address: address): u64 acquires Vault {
         let vault = borrow_global<Vault>(vault_address);
         vault.total_balance
     }
 
     /// Get the total allocated amount
+    #[view]
     public fun get_total_allocated(vault_address: address): u64 acquires Vault {
         let vault = borrow_global<Vault>(vault_address);
         vault.total_allocated
     }
 
     /// Check if an address has deposit permission
+    #[view]
     public fun has_permission(vault_address: address, address: address): bool acquires Vault {
         let vault = borrow_global<Vault>(vault_address);
         vector::contains(&vault.permissions, &address)
     }
 
     /// Get the allocation for a specific address
+    #[view]
     public fun get_allocation(vault_address: address, address: address): u64 acquires Vault {
         let vault = borrow_global<Vault>(vault_address);
         if (table::contains(&vault.allocations, address)) {
